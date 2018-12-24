@@ -1,4 +1,4 @@
-# CantinTraffic
+# CafeteriaTraffic
 
 The aim of this project is to approximately measure the crowdedness of the Bogazici University North Campus Dining Hall.
 
@@ -6,13 +6,11 @@ We will use ESP8266 for capturing probe requests and by using a 5 minute window,
 
 ---
 ---
----
 
 ## PoC - Vendor Intervals
 
 The first deliverable of the project is a test for Vendor specific Probe request interval tester. You can find information about this test [here](test_for_vendor_intervals).
 
----
 ---
 ---
 

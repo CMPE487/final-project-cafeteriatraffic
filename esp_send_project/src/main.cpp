@@ -39,7 +39,7 @@ struct TimestampedMAC { // 10 or 12 bytes per struct (probably 12 bytes because 
 };
 
 uint16_t count_of_macs = 0; // how many unique mac in the list that has been received in last 5 minutes
-constexpr uint16_t size_limit_of_mac_list = 1000;
+constexpr uint16_t size_limit_of_mac_list = 2500;
 TimestampedMAC mac_list[size_limit_of_mac_list];
 
 int16_t find_in_mac_list(uint8_t* mac){ // check if mac is already in the list
@@ -122,7 +122,7 @@ struct SnifferPacket{
 
 static void printDataSpan(uint16_t size, uint8_t* data) {
   for(uint16_t i = 0; i < DATA_LENGTH && i < size; i++) {
-    Serial.write(data[i]);
+    // Serial.write(data[i]);
   }
 }
 
@@ -144,41 +144,41 @@ static void showMetadata(SnifferPacket *snifferPacket) {
       frameSubType != SUBTYPE_PROBE_REQUEST)
         return;
 
-  Serial.print("RSSI: ");
-  Serial.print(snifferPacket->rx_ctrl.rssi, DEC);
+  // Serial.print("RSSI: ");
+  // Serial.print(snifferPacket->rx_ctrl.rssi, DEC);
 
-  Serial.print(" Ch: ");
-  Serial.print(wifi_get_channel());
+  // Serial.print(" Ch: ");
+  // Serial.print(wifi_get_channel());
 
   char addr[] = "00:00:00:00:00:00";
   getMAC(addr, snifferPacket->data + 10);
-  Serial.print(" Source MAC: ");
-  Serial.print(addr);
+  // Serial.print(" Source MAC: ");
+  // Serial.print(addr);
 
   int16_t idx = find_in_mac_list(snifferPacket->data + 10); // is mac in the list
   if (idx == -1){ // NO
     add_to_mac_list(snifferPacket->data + 10); // add it
-    Serial.print(" NEW ");
+    // Serial.print(" NEW ");
   }
   else { // YES
     update_timestamp_in_mac_list(idx); // update it
-    Serial.print(" OLD ");
+    // Serial.print(" OLD ");
   }
 
   /* getMAC(addr, snifferPacket->data, 4);
-  Serial.print(" Destination MAC: ");
-  Serial.print(addr); */ // this is always FF:FF:FF:...
+  // Serial.print(" Destination MAC: ");
+  // Serial.print(addr); */ // this is always FF:FF:FF:...
 
   uint8_t SSID_length = snifferPacket->data[25];
   if (SSID_length > 0){
-    Serial.print(" SSID: ");
-    printDataSpan(SSID_length, snifferPacket->data + 26);
+    // Serial.print(" SSID: ");
+    // printDataSpan(SSID_length, snifferPacket->data + 26);
   }
 
   uint8_t mac0 = snifferPacket->data[10];
-  if (((mac0 | 0x02) & 0xfe) == mac0) Serial.print(" Locally administered! ");
+  // if (((mac0 | 0x02) & 0xfe) == mac0) Serial.print(" Locally administered! ");
 
-  Serial.println();
+  // Serial.println();
 }
 
 /**
